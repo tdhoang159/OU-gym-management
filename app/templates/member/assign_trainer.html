@@ -1,0 +1,40 @@
+{% extends "layout/core_base.html" %}
+
+{% block title %}Chọn huấn luyện viên{% endblock %}
+
+{% block content %}
+  <section class="section dashboard">
+    <div class="container">
+      <div class="section__data">
+        <h2 class="section__subtitle">Huấn luyện viên cá nhân</h2>
+        <div class="section__titles">
+          <h1 class="section__title-border">ASSIGN</h1>
+          <h1 class="section__title">TRAINER</h1>
+        </div>
+      </div>
+
+      <form class="training-form" method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="training-form__row">
+          <label>Chọn huấn luyện viên</label>
+          <select name="trainer_id" required>
+            {% for trainer in trainers %}
+              <option value="{{ trainer.id }}" {% if current_trainer and trainer.id == current_trainer.id %}selected{% endif %}>
+                {{ trainer.full_name }} ({{ trainer.email }})
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="button button__flex" style="justify-content: center;">
+          Gán huấn luyện viên
+          <i class="ri-user-follow-line"></i>
+        </button>
+      </form>
+
+      {% if current_trainer %}
+        <p class="dashboard__hint" style="text-align: center; margin-top: 1rem;">
+          Bạn đang được huấn luyện bởi <strong>{{ current_trainer.full_name }}</strong>.
+        </p>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

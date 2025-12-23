@@ -1,0 +1,212 @@
+{% extends "layout/core_base.html" %}
+
+{% block title %}Bản điều khiển{% endblock %}
+
+{% block content %}
+  <section class="section dashboard" id="dashboard">
+    <div class="container">
+      <div class="section__data">
+        <h2 class="section__subtitle">Khu vực hội viên</h2>
+        <div class="section__titles">
+          <h1 class="section__title-border">DASHBOARD</h1>
+          <h1 class="section__title">MEMBER</h1>
+        </div>
+      </div>
+
+      <div class="dashboard__top grid">
+        <!-- ===== THÔNG TIN HỘI VIÊN ===== -->
+        <article class="program__card dashboard__card dashboard__card-center">
+          <div class="dashboard__avatar-wrapper" aria-hidden="true">
+            {% if current_user.avatar %}
+              <img
+                src="{{ current_user.avatar }}"
+                alt="Avatar"
+                class="dashboard__avatar"
+                loading="lazy"
+              />
+            {% else %}
+              <img
+                src="{{ url_for('static', filename='homepage/assets/img/logo-nav.png') }}"
+                alt="OU GYM"
+                class="dashboard__avatar"
+                loading="lazy"
+              />
+            {% endif %}
+          </div>
+
+          <h3 class="program__title dashboard__title-center">Thông tin hội viên</h3>
+
+          <div class="dashboard__list" role="list">
+            <div class="dashboard__item" role="listitem">
+              <span class="dashboard__label">Họ tên</span>
+              <span class="dashboard__value">{{ current_user.full_name }}</span>
+            </div>
+
+            <div class="dashboard__item" role="listitem">
+              <span class="dashboard__label">Email</span>
+              <span class="dashboard__value">{{ current_user.email }}</span>
+            </div>
+
+            <div class="dashboard__item" role="listitem">
+              <span class="dashboard__label">Số điện thoại</span>
+              <span class="dashboard__value">{{ current_user.phone }}</span>
+            </div>
+
+            <div class="dashboard__item" role="listitem">
+              <span class="dashboard__label">Trạng thái</span>
+              {% if membership %}
+                <span class="badge badge--success">
+                  Hiệu lực đến {{ membership.end_date.strftime("%d/%m/%Y") }}
+                </span>
+              {% else %}
+                <span class="badge badge--danger">Chưa đăng ký gói tập</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="dashboard__actions dashboard__actions-center">
+            <a href="{{ url_for('logout') }}" class="button button__flex button--ghost">
+              Đăng xuất <i class="ri-logout-box-r-line"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- ===== GÓI TẬP HIỆN TẠI ===== -->
+        <article class="program__card dashboard__card dashboard__card-center">
+          <a href="/" class="dashboard__brand-icon">
+            <img
+              src="{{ url_for('static', filename='homepage/assets/img/logo-nav.png') }}"
+              alt="logo"
+              loading="lazy"
+            />
+            <span>OU GYM</span>
+          </a>
+
+          <h3 class="program__title dashboard__title-center">Gói tập hiện tại</h3>
+
+          {% if membership %}
+            <div class="dashboard__package-info">
+              <p class="dashboard__package-name">{{ membership.package.name }}</p>
+              <p>
+                Hiệu lực từ {{ membership.start_date.strftime("%d/%m/%Y") }} đến
+                {{ membership.end_date.strftime("%d/%m/%Y") }}.
+              </p>
+            </div>
+          {% else %}
+            <p class="dashboard__hint dashboard__title-center">
+              Bạn chưa đăng ký gói tập nào. Hãy chọn gói phù hợp để bắt đầu luyện tập.
+            </p>
+          {% endif %}
+
+          <div class="dashboard__actions dashboard__actions-center">
+            {% if not membership %}
+              <a href="#pricing" class="button button__flex">
+                Xem gói tập <i class="ri-arrow-right-line"></i>
+              </a>
+            {% endif %}
+            <a href="{{ url_for('transaction_history') }}" class="button button__flex button--ghost">
+              Lịch sử giao dịch <i class="ri-time-line"></i>
+            </a>
+            <a href="{{ url_for('assign_trainer') }}" class="button button__flex button--ghost">
+              Chọn huấn luyện viên <i class="ri-user-follow-line"></i>
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  {% if not membership %}
+    <!-- ===== DANH SÁCH GÓI TẬP ===== -->
+    <section class="pricing section pricing--dashboard" id="pricing">
+      <div class="container">
+        <div class="section__data">
+          <h2 class="section__subtitle">Gói tập</h2>
+          <div class="section__titles">
+            <h1 class="section__title-border">AVAILABLE</h1>
+            <h1 class="section__title">PACKAGES</h1>
+          </div>
+        </div>
+
+        <div class="pricing__container grid">
+          {% if packages %}
+            {% for package in packages %}
+              {% set icon_index = (loop.index0 % 3) + 1 %}
+              <article class="pricing__card">
+                <header class="pricing__header">
+                  <div class="pricing__shape">
+                    <img
+                      src="{{ url_for('static', filename='homepage/assets/img/pricing' ~ icon_index ~ '.png') }}"
+                      alt="{{ package.name }}"
+                      class="pricing__img"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h1 class="pricing__title">{{ package.name }}</h1>
+                  <h2 class="pricing__number">{{ package.price|currency_vnd }}</h2>
+                </header>
+                <ul class="pricing__list">
+                  <li class="pricing__item">
+                    <i class="ri-checkbox-circle-line"></i> Thời hạn {{ package.duration_months * 30 }} ngày
+                  </li>
+                  <li class="pricing__item">
+                    <i class="ri-checkbox-circle-line"></i> Truy cập phòng tập mỗi ngày
+                  </li>
+                </ul>
+                <form
+                  method="post"
+                  action="{{ url_for('checkout_package', package_id=package.id) }}"
+                >
+                  <button type="submit" class="button button__flex pricing__button">
+                    Đăng ký <i class="ri-arrow-right-line"></i>
+                  </button>
+                </form>
+              </article>
+            {% endfor %}
+          {% else %}
+            <p>Hiện chưa có gói tập nào được mở bán.</p>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  {% if training_plan and training_details %}
+    <section class="section dashboard-history">
+      <div class="container">
+        <div class="section__data">
+          <h2 class="section__subtitle">Lịch tập cá nhân</h2>
+          <div class="section__titles">
+            <h1 class="section__title-border">PLAN</h1>
+            <h1 class="section__title">TRAINING</h1>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Bài tập</th>
+                <th>Số hiệp</th>
+                <th>Số lần/hiệp</th>
+                <th>Ngày tập</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for detail in training_details %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>{{ detail.exercise.name }}</td>
+                  <td>{{ detail.sets }}</td>
+                  <td>{{ detail.reps }}</td>
+                  <td>{{ detail.days_of_week }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}

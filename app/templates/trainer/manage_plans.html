@@ -1,0 +1,96 @@
+{% extends "layout/core_base.html" %}
+
+{% block title %}Quản lý lịch tập{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container">
+      <div class="section__data">
+        <h2 class="section__subtitle">Huấn luyện viên</h2>
+        <div class="section__titles">
+          <h1 class="section__title-border">LỊCH</h1>
+          <h1 class="section__title">TẬP LUYỆN</h1>
+        </div>
+      </div>
+
+      <form class="training-form" method="post">
+        <div class="training-form__row">
+          <label>Hội viên</label>
+          <select name="member_id" required>
+            {% for member in members %}
+              <option value="{{ member.id }}">{{ member.full_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="training-form__row">
+          <label>Huấn luyện viên</label>
+          <select name="trainer_id" required>
+            {% for trainer in trainers %}
+              <option value="{{ trainer.id }}">{{ trainer.user.full_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="training-form__row">
+          <label>Bài tập</label>
+          <input type="text" name="exercise" placeholder="Ví dụ: Squat" required />
+        </div>
+
+        <div class="training-form__row">
+          <label>Số hiệp</label>
+          <input type="number" name="sets" min="1" value="3" required />
+        </div>
+
+        <div class="training-form__row">
+          <label>Số lần/hiệp</label>
+          <input type="number" name="reps" min="1" value="12" required />
+        </div>
+
+        <div class="training-form__row">
+          <label>Ngày tập trong tuần</label>
+          <input type="text" name="days" placeholder="Thứ 2, 4, 6" required />
+        </div>
+
+        <button type="submit" class="button button__flex">
+          Thêm bài tập <i class="ri-calendar-check-line"></i>
+        </button>
+      </form>
+
+      <div class="training-plan-list">
+        {% for plan in plans %}
+          <div class="training-plan-card">
+            <div class="training-plan-card__header">
+              <h3>{{ plan.member.full_name }}</h3>
+              <span>Huấn luyện viên: {{ plan.trainer.user.full_name }}</span>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Bài tập</th>
+                  <th>Số hiệp</th>
+                  <th>Số lần/hiệp</th>
+                  <th>Ngày tập</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for detail in plan.details %}
+                  <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ detail.exercise.name }}</td>
+                    <td>{{ detail.sets }}</td>
+                    <td>{{ detail.reps }}</td>
+                    <td>{{ detail.days_of_week }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p>Chưa có lịch tập nào.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

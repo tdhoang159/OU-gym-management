@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- FAVICON -->
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='homepage/assets/img/favicon.png') }}"
+      type="image/x-icon"
+    />
+
+    <!-- REMIXICON -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='homepage/assets/css/styles.css') }}"
+    />
+
+    <title>{% block title %}OU Gym{% endblock %}</title>
+  </head>
+
+  <body>
+    <!-- ================== HEADER ==================== -->
+    {% include "layout/header.html" %}
+    <main class="main">
+      <!-- MAIN CONTENT -->
+      {% block content %}{% endblock %}
+
+      <!--==================== FOOTER ====================-->
+      {% include "layout/footer.html" %}
+    </main>
+    <!--========== SCROLL UP ==========-->
+    <a href="#" class="scrollup" id="scroll-up">
+      <i class="ri-arrow-up-line"></i>
+    </a>
+
+    <!--=============== SCROLLREVEAL ===============-->
+    <script src="{{ url_for('static', filename='homepage/assets/js/scrollreveal.min.js')}}"></script>
+
+    <!--=============== EMAIL JS ===============-->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+
+    <!--=============== MAIN JS ===============-->
+    <script src="{{ url_for('static', filename='homepage/assets/js/main.js')}}"></script>
+  </body>
+</html>

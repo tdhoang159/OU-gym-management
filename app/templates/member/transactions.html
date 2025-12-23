@@ -1,0 +1,55 @@
+{% extends "layout/core_base.html" %}
+
+{% block title %}Lịch sử giao dịch{% endblock %}
+
+{% block content %}
+  <section class="section dashboard-history">
+    <div class="container">
+      <div class="section__data">
+        <h2 class="section__subtitle">Thanh toán</h2>
+        <div class="section__titles">
+          <h1 class="section__title-border">TRANSACTION</h1>
+          <h1 class="section__title">HISTORY</h1>
+        </div>
+      </div>
+
+      {% if payments %}
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Mã giao dịch</th>
+                <th>Gói tập</th>
+                <th>Số tiền</th>
+                <th>Ngày thanh toán</th>
+                <th>Phương thức</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for payment in payments %}
+                <tr>
+                  <td>#{{ payment.id }}</td>
+                  <td>{{ payment.invoice.membership.package.name }}</td>
+                  <td>{{ payment.amount|currency_vnd }}</td>
+                  <td>{{ payment.payment_date.strftime("%d/%m/%Y %H:%M") }}</td>
+                  <td>{{ payment.payment_method }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="dashboard__hint">
+          Bạn chưa có giao dịch nào. Khi thanh toán qua VNPAY thành công, thông tin sẽ
+          xuất hiện tại đây.
+        </p>
+      {% endif %}
+
+      <div class="dashboard__actions" style="margin-top: 2rem">
+        <a href="{{ url_for('dashboard_member') }}" class="button button__flex">
+          Quay lại dashboard <i class="ri-arrow-left-line"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+{% endblock %}

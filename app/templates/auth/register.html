@@ -1,0 +1,163 @@
+{% extends "layout/auth_base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+    <!-- MAIN -->
+    <main class="main">
+      <section class="section">
+        <div class="container" style="max-width: 550px">
+          <div class="section__data">
+            <h2 class="section__subtitle">Join With Us</h2>
+            <div class="section__titles">
+              <h1 class="section__title-border">CREATE</h1>
+              <h1 class="section__title">ACCOUNT</h1>
+            </div>
+          </div>
+
+          <form
+            class="calculate__form auth-form"
+            method="post"
+            action="/register"
+            enctype="multipart/form-data"
+          >
+            <div class="calculate__box">
+              <input
+                type="text"
+                name="fullname"
+                placeholder="Full Name"
+                class="calculate__input"
+                required
+              />
+            </div>
+
+            <div class="calculate__box">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                class="calculate__input"
+                required
+              />
+            </div>
+
+            <div class="calculate__box">
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                class="calculate__input"
+                required
+              />
+            </div>
+
+            <div class="calculate__box">
+              <select name="gender" class="calculate__input" required>
+                <option value="" disabled selected>Gender</option>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+
+            <div class="calculate__box">
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                class="calculate__input"
+                required
+              />
+            </div>
+
+            <div class="calculate__box">
+              <input
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm Password"
+                class="calculate__input"
+                required
+              />
+            </div>
+
+            <div class="calculate__box upload-box">
+              <label for="avatar" class="upload-label">
+                <img id="avatar-preview" class="avatar-preview" hidden />
+                <i class="ri-image-add-line"></i>
+                <span>Tải ảnh đại diện tại đây</span>
+              </label>
+              <input
+                type="file"
+                id="avatar"
+                name="avatar"
+                accept="image/*"
+                hidden
+              />
+            </div>
+
+            <button type="submit" class="button button__flex">
+              Register <i class="ri-user-add-line"></i>
+            </button>
+          </form>
+
+          <p style="text-align: center; margin-top: 1.5rem">
+            Already have an account?
+            <a href="/login" class="color-green">Login</a>
+          </p>
+        </div>
+      </section>
+    </main>
+<script>
+    /*=============== SHOW AVATAR AFTER UPLOAD ===============*/
+    const input = document.getElementById("avatar");
+
+    if (input) {
+      const labelText = document.querySelector(".upload-label span");
+      const icon = document.querySelector(".upload-label i");
+      const preview = document.getElementById("avatar-preview");
+
+      input.addEventListener("change", () => {
+        const file = input.files[0];
+        if (!file) return;
+
+        // Hiển thị tên file
+        labelText.textContent = file.name;
+
+        // Hiển thị ảnh preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          preview.src = e.target.result;
+          preview.hidden = false;
+          icon.style.display = "none";
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function showToast(message) {
+    const container = document.getElementById("toast-container");
+
+    const toast = document.createElement("div");
+    toast.className = "toast toast-error";
+    toast.innerHTML = `
+      <i class="ri-error-warning-line"></i>
+      <span>${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    // Hiện toast
+    setTimeout(() => {
+      toast.classList.add("show");
+    }, 100);
+
+    // Tự ẩn sau 3s
+    setTimeout(() => {
+      toast.classList.remove("show");
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+  </script>
+  
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "layout/core_base.html" %}
+
+{% block title %}Bảng điều khiển Admin{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container">
+      <div class="section__data">
+        <h2 class="section__subtitle">Quản trị viên</h2>
+        <div class="section__titles">
+          <h1 class="section__title-border">TỔNG QUAN</h1>
+          <h1 class="section__title">HOẠT ĐỘNG</h1>
+        </div>
+      </div>
+
+      <form class="training-form" method="get" style="margin-bottom: 2rem;">
+        <div class="training-form__row">
+          <label>Chọn năm thống kê</label>
+          <select name="year" onchange="this.form.submit()">
+            {% for y in year_options %}
+              <option value="{{ y }}" {% if y == year %}selected{% endif %}>Năm {{ y }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </form>
+
+      <div class="dashboard__top grid" style="margin-bottom: 2rem;">
+        <article class="program__card dashboard__card">
+          <h3 class="program__title">Hội viên đăng ký ({{ year }})</h3>
+          <p class="dashboard__stat">{{ total_memberships }}</p>
+          <span class="dashboard__hint">Tổng số gói đã kích hoạt</span>
+        </article>
+
+        <article class="program__card dashboard__card">
+          <h3 class="program__title">Doanh thu ({{ year }})</h3>
+          <p class="dashboard__stat">{{ total_revenue|currency_vnd }}</p>
+          <span class="dashboard__hint">Đã thanh toán</span>
+        </article>
+
+        <article class="program__card dashboard__card">
+          <h3 class="program__title">Hội viên đang hoạt động</h3>
+          <p class="dashboard__stat">{{ active_members }}</p>
+          <span class="dashboard__hint">Gói còn hiệu lực</span>
+        </article>
+      </div>
+
+      <div class="training-plan-card" style="margin-bottom: 2rem;">
+        <h3>Biểu đồ hội viên theo tháng</h3>
+        <canvas id="membershipChart" height="120"></canvas>
+      </div>
+
+      <div class="training-plan-card">
+        <h3>Biểu đồ doanh thu theo tháng</h3>
+        <canvas id="revenueChart" height="120"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const chartLabels = {{ chart_labels|tojson }};
+    const membershipData = {{ membership_chart|tojson }};
+    const revenueData = {{ revenue_chart|tojson }};
+
+    const baseOptions = {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { color: "#fff" },
+        },
+        x: {
+          ticks: { color: "#fff" },
+        },
+      },
+    };
+
+    const ctxMembers = document.getElementById("membershipChart");
+    if (ctxMembers) {
+      new Chart(ctxMembers, {
+        type: "bar",
+        data: {
+          labels: chartLabels,
+          datasets: [
+            {
+              label: "Hội viên",
+              backgroundColor: "#A1FF00",
+              borderRadius: 6,
+              data: membershipData,
+            },
+          ],
+        },
+        options: baseOptions,
+      });
+    }
+
+    const ctxRevenue = document.getElementById("revenueChart");
+    if (ctxRevenue) {
+      new Chart(ctxRevenue, {
+        type: "line",
+        data: {
+          labels: chartLabels,
+          datasets: [
+            {
+              label: "Doanh thu (VND)",
+              borderColor: "#A1FF00",
+              backgroundColor: "rgba(161, 255, 0, 0.15)",
+              tension: 0.3,
+              fill: true,
+              data: revenueData,
+            },
+          ],
+        },
+        options: baseOptions,
+      });
+    }
+  </script>
+{% endblock %}

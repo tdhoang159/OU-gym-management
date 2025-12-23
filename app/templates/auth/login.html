@@ -1,0 +1,50 @@
+{% extends "layout/auth_base.html" %} {% block title %}Login{% endblock %} {% block
+content %}
+
+<!-- MAIN -->
+<main class="main">
+  <section class="section">
+    <div class="container" style="max-width: 500px">
+      <div class="section__data">
+        <h2 class="section__subtitle">Welcome Back</h2>
+        <div class="section__titles">
+          <h1 class="section__title-border">LOGIN</h1>
+          <h1 class="section__title">ACCOUNT</h1>
+        </div>
+      </div>
+
+      <form class="calculate__form auth-form" method="post" action="/login">
+        <div class="calculate__box">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            class="calculate__input"
+            required
+          />
+        </div>
+
+        <div class="calculate__box">
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            class="calculate__input"
+            required
+          />
+        </div>
+
+        <button type="submit" class="button button__flex">
+          Login <i class="ri-login-box-line"></i>
+        </button>
+      </form>
+
+      <p style="text-align: center; margin-top: 1.5rem">
+        Don't have an account?
+        <a href="/register" class="color-green">Register</a>
+      </p>
+    </div>
+  </section>
+</main>
+
+{% endblock %}

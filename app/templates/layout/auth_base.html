@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- FAVICON -->
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='homepage/assets/img/favicon.png') }}"
+      type="image/x-icon"
+    />
+
+    <!-- REMIXICON -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='homepage/assets/css/styles.css') }}"
+    />
+
+    <title>{% block title %}OU Gym{% endblock %}</title>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <header class="header bg-header">
+      <nav class="nav container">
+        <a href="/" class="nav__logo">
+          <img
+            src="{{ url_for('static', filename='homepage/assets/img/logo-nav.png') }}"
+            alt="logo"
+          />
+          OU GYM
+        </a>
+      </nav>
+    </header>
+    {% block content %}{% endblock %}
+    <!-- FOOTER -->
+    <footer class="footer section">
+      <div class="footer__group container">
+        <span class="footer__copy"> &#169; OU Gym Management System </span>
+      </div>
+    </footer>
+
+    {% include "layout/toast.html" %}
+  </body>
+</html>

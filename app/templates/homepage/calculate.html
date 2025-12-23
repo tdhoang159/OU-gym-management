@@ -1,0 +1,48 @@
+<section class="calculate section">
+  <div class="calculate__container container grid">
+    <div class="calculate__content">
+      <div class="section__titles">
+        <h1 class="section__title-border">TÍNH</h1>
+        <h1 class="section__title">CHỈ SỐ BMI</h1>
+      </div>
+
+      <p class="calculate__description">
+        Công cụ BMI giúp bạn kiểm tra nhanh thể trạng dựa trên chiều cao và cân
+        nặng để điều chỉnh giáo án phù hợp.
+      </p>
+
+      <form action="" class="calculate__form" id="calculate-form">
+        <div class="calculate__box">
+          <input
+            type="number"
+            placeholder="Chiều cao"
+            class="calculate__input"
+            id="calculate-cm"
+          />
+          <label for="calculate-cm" class="calculate__label">cm</label>
+        </div>
+
+        <div class="calculate__box">
+          <input
+            type="number"
+            placeholder="Cân nặng"
+            class="calculate__input"
+            id="calculate-kg"
+          />
+          <label for="calculate-kg" class="calculate__label">kg</label>
+        </div>
+
+        <button type="submit" class="button button__flex">
+          Tính ngay <i class="ri-arrow-right-line"></i>
+        </button>
+      </form>
+
+      <p class="calculate__message" id="calculate-message"></p>
+    </div>
+    <img
+      src="{{url_for('static', filename='homepage/assets/img/calculate-img.png')}}"
+      alt="calculate image"
+      class="calculate__img"
+    />
+  </div>
+</section>

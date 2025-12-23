@@ -1,0 +1,68 @@
+{% extends "layout/core_base.html" %}
+
+{% block title %}Đăng ký hội viên - Admin{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container" style="max-width: 720px">
+      <div class="section__data">
+        <h2 class="section__subtitle">Quản trị viên</h2>
+        <div class="section__titles">
+          <h1 class="section__title-border">ĐĂNG KÝ</h1>
+          <h1 class="section__title">HỘI VIÊN MỚI</h1>
+        </div>
+      </div>
+
+      <form class="training-form" method="post">
+        <div class="training-form__row">
+          <label>Họ và tên</label>
+          <input type="text" name="full_name" required placeholder="Nguyễn Văn A" />
+        </div>
+
+        <div class="training-form__row">
+          <label>Email đăng nhập</label>
+          <input type="email" name="email" required placeholder="member@ougym.vn" />
+        </div>
+
+        <div class="training-form__row">
+          <label>Số điện thoại</label>
+          <input type="tel" name="phone" required placeholder="0123 456 789" />
+        </div>
+
+        <div class="training-form__row">
+          <label>Giới tính</label>
+          <select name="gender" required>
+            <option value="" disabled selected>Chọn giới tính</option>
+            <option value="MALE">Nam</option>
+            <option value="FEMALE">Nữ</option>
+            <option value="OTHER">Khác</option>
+          </select>
+        </div>
+
+        <div class="training-form__row">
+          <label>Mật khẩu tạm</label>
+          <input type="text" name="password" required placeholder="Nhập mật khẩu khởi tạo" />
+        </div>
+
+        <div class="training-form__row">
+          <label>Chọn gói tập</label>
+          <select name="package_id" required>
+            <option value="" disabled selected>Chọn gói</option>
+            {% for pkg in packages %}
+              <option value="{{ pkg.id }}">{{ pkg.name }} - {{ pkg.price|currency_vnd }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="training-form__row">
+          <label>Ngày bắt đầu hiệu lực</label>
+          <input type="date" name="start_date" value="{{ default_start }}" />
+        </div>
+
+        <button type="submit" class="button button__flex">
+          Tạo hội viên <i class="ri-user-add-line"></i>
+        </button>
+      </form>
+    </div>
+  </section>
+{% endblock %}

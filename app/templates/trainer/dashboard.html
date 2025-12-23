@@ -1,0 +1,66 @@
+{% extends "layout/core_base.html" %}
+
+{% block title %}Bảng huấn luyện viên{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container">
+      <div class="section__data">
+        <h2 class="section__subtitle">Huấn luyện viên</h2>
+        <div class="section__titles">
+          <h1 class="section__title-border">DASHBOARD</h1>
+          <h1 class="section__title">{{ trainer.full_name }}</h1>
+        </div>
+      </div>
+
+      <p style="text-align:center; margin-bottom: 2rem; color: var(--text-color);">
+        Các hội viên sẽ tự gán bạn làm huấn luyện viên cá nhân. Dưới đây là danh sách hội viên đã được gán.
+      </p>
+
+      <div class="training-plan-list">
+        {% for plan in trainer_plans %}
+          <div class="training-plan-card">
+            <div class="training-plan-card__header">
+              <div>
+                <h3>{{ plan.member.full_name }}</h3>
+                <span>Email: {{ plan.member.email }}</span>
+              </div>
+              <a class="button button__flex" href="{{ url_for('trainer_create_plan') }}?member_id={{ plan.member_id }}">
+                Tạo kế hoạch <i class="ri-pencil-line"></i>
+              </a>
+            </div>
+
+            {% if plan.details %}
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Bài tập</th>
+                    <th>Số hiệp</th>
+                    <th>Số lần/hiệp</th>
+                    <th>Ngày tập</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for detail in plan.details %}
+                    <tr>
+                      <td>{{ loop.index }}</td>
+                      <td>{{ detail.exercise.name }}</td>
+                      <td>{{ detail.sets }}</td>
+                      <td>{{ detail.reps }}</td>
+                      <td>{{ detail.days_of_week }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <p>Chưa có kế hoạch luyện tập. Hãy tạo kế hoạch.</p>
+            {% endif %}
+          </div>
+        {% else %}
+          <p>Chưa có hội viên nào gán bạn làm huấn luyện viên.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}
